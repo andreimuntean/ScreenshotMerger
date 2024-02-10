@@ -5,14 +5,15 @@
 //  Created by Andrei Muntean on 22/01/2024.
 //
 
-#include "ScreenshotMerger.hpp"
 #include <iostream>
+
+#include "ScreenshotMerger.hpp"
 
 
 Image ScreenshotMerger::Merge(const Image& firstImage,
                               const Image& secondImage) {
     assert(firstImage.Width() == secondImage.Width());
-    
+
     Image sharedChunk = findSharedChunk(firstImage, secondImage);
     Image result(firstImage.Width(),
                  firstImage.Height() + secondImage.Height() - sharedChunk.Height());
@@ -20,8 +21,8 @@ Image ScreenshotMerger::Merge(const Image& firstImage,
     for (uint16_t y = 0; y < result.Height(); ++y) {
         for (uint16_t x = 0; x < result.Width(); ++x) {
             result[y][x] = y < firstImage.Height()
-                                  ? firstImage[y][x]
-                                  : secondImage[y - firstImage.Height() + sharedChunk.Height()][x];
+                           ? firstImage[y][x]
+                           : secondImage[y - firstImage.Height() + sharedChunk.Height()][x];
         }
     }
 
@@ -44,6 +45,6 @@ Image ScreenshotMerger::findSharedChunk(const Image& firstImage, const Image& se
         }
     }
 
-    std::cerr << "WARNING: Couldn't merge two images!\n";
+    std::cerr << "WARNING: Couldn't merge two images.\n";
     return Image(std::vector<std::vector<Pixel>>());
 }
