@@ -42,10 +42,11 @@ public:
     Image(const cv::Mat&);
 
     cv::Mat ToMat();
-    Image Crop(uint16_t startRow, uint16_t endRow) const;
+    Image Crop(uint16_t startRow, uint16_t height) const;
 
-    std::vector<Pixel> operator [](uint16_t rowIndex) const { return pixels[rowIndex]; }
-    std::vector<Pixel> & operator [](uint16_t rowIndex) { return pixels[rowIndex]; }
+    Image operator+(const Image&) const;
+    std::vector<Pixel> operator[](uint16_t rowIndex) const { return pixels[rowIndex]; }
+    std::vector<Pixel>& operator[](uint16_t rowIndex) { return pixels[rowIndex]; }
 
 private:
     std::vector<std::vector<Pixel>> pixels;

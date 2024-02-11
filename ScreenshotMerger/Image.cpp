@@ -66,7 +66,17 @@ cv::Mat Image::ToMat() {
 }
 
 
-Image Image::Crop(uint16_t startRow, uint16_t newHeight) const {
+Image Image::Crop(uint16_t startRow, uint16_t height) const {
     return Image(std::vector<std::vector<Pixel>>(pixels.begin() + startRow,
-                                                 pixels.begin() + startRow + newHeight));
+                                                 pixels.begin() + startRow + height));
+}
+
+
+Image Image::operator+(const Image& other) const {
+    auto concatenatedPixels = std::vector<std::vector<Pixel>>(pixels);
+
+    concatenatedPixels.reserve(Height() + other.Height());
+    concatenatedPixels.insert(concatenatedPixels.end(), other.pixels.begin(), other.pixels.end());
+
+    return Image(concatenatedPixels);
 }

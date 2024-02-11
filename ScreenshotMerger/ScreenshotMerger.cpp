@@ -14,23 +14,15 @@ Image ScreenshotMerger::Merge(const Image& firstImage,
                               const Image& secondImage) {
     assert(firstImage.Width() == secondImage.Width());
 
-    Image sharedChunk = findSharedChunk(firstImage, secondImage);
-    Image result(firstImage.Width(),
-                 firstImage.Height() + secondImage.Height() - sharedChunk.Height());
+    const Image& sharedChunk = findSharedChunk(firstImage, secondImage);
 
-    for (uint16_t y = 0; y < result.Height(); ++y) {
-        for (uint16_t x = 0; x < result.Width(); ++x) {
-            result[y][x] = y < firstImage.Height()
-                           ? firstImage[y][x]
-                           : secondImage[y - firstImage.Height() + sharedChunk.Height()][x];
-        }
-    }
-
-    return result;
+    return firstImage + secondImage.Crop(sharedChunk.Height(),
+                                         secondImage.Height() - sharedChunk.Height());
 }
 
 
-Image ScreenshotMerger::findSharedChunk(const Image& firstImage, const Image& secondImage) {
+Image ScreenshotMerger::findSharedChunk(const Image& firstImage,
+                                        const Image& secondImage) {
     assert(firstImage.Width() == secondImage.Width());
 
     for (uint16_t y = MAX(firstImage.Height() - secondImage.Height(), 0); y < firstImage.Height(); ++y) {
