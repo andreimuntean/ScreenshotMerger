@@ -58,3 +58,14 @@ To run the compiled program, a `lib` directory must exist in the same directory 
   - `libopencv_imgproc.dylib`
 
 _(these are the same dylibs that were enhanced with `install_name_tool` in the previous section)_
+
+To automatically generate the `Executable` directory using Xcode, go to "Build Phases" and update the target's "Copy Files"
+configuration to:
+  - Destination: Executables
+  - Subpath: lib
+  - Untick "Copy only when installing"
+  - Copy the following files:
+    * `libopencv_core.dylib`
+    * `libopencv_imgcodecs.dylib`
+    * `libopencv_imgproc.dylib`
+
